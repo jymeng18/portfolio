@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jerry &mdash; Software Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; }
+    body {
+      font-family: 'IBM Plex Mono', monospace;
+      background: #F5F0E8;
+      color: #2A2520;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 720px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 4rem 2rem 4rem;
+    }
+    .name {
+      font-size: clamp(22px, 5vw, 32px);
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .tagline {
+      font-size: clamp(12px, 2vw, 14px);
+      color: #7A7268;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2rem;
+    }
+    .status-dot {
+      display: inline-block;
+      width: 7px; height: 7px; min-width: 7px;
+      background: #8A9E7B;
+      border-radius: 50%;
+    }
+    #sakura-canvas {
+      display: block;
+      width: 100%;
+      height: 340px;
+      margin-bottom: 2.25rem;
+    }
+    @media (max-width: 600px) { #sakura-canvas { height: 240px; } }
+    .section-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: #8A9E7B;
+      text-transform: uppercase;
+      margin-bottom: 1.1rem;
+    }
+    .section-label::before { content: '// '; }
+    hr { border: none; border-top: 1px solid #DDD8CE; margin: 2.5rem 0; }
+    .bio { font-size: clamp(13px, 2vw, 14px); color: #2A2520; line-height: 1.85; max-width: 600px; }
+    .skills-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .skill-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      border: 1px solid #C8C2B6;
+      padding: 4px 10px;
+      color: #5A544C;
+      background: #EDE8DC;
+    }
+    .projects-list { display: flex; flex-direction: column; gap: 1.75rem; }
+    .project-item { border-left: 2px solid #B87355; padding-left: 1rem; }
+    .project-name { font-size: clamp(13px, 2vw, 14px); font-weight: 600; margin-bottom: 4px; }
+    .project-name a { color: #2A2520; text-decoration: none; }
+    .project-name a:hover { color: #B87355; }
+    .project-stack { font-size: 11px; color: #8A9E7B; font-weight: 500; margin-bottom: 5px; }
+    .project-desc { font-size: clamp(12px, 2vw, 13px); color: #5A544C; line-height: 1.75; }
+    .experience-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .exp-item { display: grid; grid-template-columns: 1fr auto; column-gap: 1.5rem; row-gap: 3px; }
+    .exp-role { font-size: clamp(13px, 2vw, 14px); font-weight: 600; grid-column: 1; grid-row: 1; }
+    .exp-company { font-size: 13px; color: #7A7268; grid-column: 1; grid-row: 2; }
+    .exp-date { font-size: 12px; color: #8A9E7B; white-space: nowrap; grid-column: 2; grid-row: 1/3; align-self: center; text-align: right; }
+    .links-row { display: flex; flex-wrap: wrap; gap: 1.25rem 2rem; align-items: center; }
+    .social-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px; font-weight: 500;
+      color: #2A2520; text-decoration: none;
+      border-bottom: 1px solid #C8C2B6;
+      padding-bottom: 2px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .social-link:hover { color: #B87355; border-color: #B87355; }
+    .social-link svg { width: 16px; height: 16px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .footer { font-size: 12px; color: #9A9289; margin-top: 2.75rem; }
+    @media (max-width: 600px) {
+      .container { padding: 2.5rem 1.25rem 3rem; }
+      .exp-item { grid-template-columns: 1fr; }
+      .exp-date { grid-column: 1; grid-row: 3; text-align: left; color: #9A9289; }
+      .links-row { gap: 1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="name">Jerry</h1>
+    <p class="tagline">
+      <span class="status-dot"></span>
+      CS student at SFU &mdash; backend engineering, real-time systems
+    </p>
+
+    <canvas id="sakura-canvas"></canvas>
+
+    <p class="section-label">about</p>
+    <p class="bio">
+      I build backend-heavy applications with a focus on real-time architecture and clean system design.
+      Currently on co-op and developing personal projects to go deeper into distributed systems,
+      WebSockets, and API design. I prefer building things that are technically interesting over
+      things that just look good.
+    </p>
+    <hr>
+    <p class="section-label">skills</p>
+    <div class="skills-grid">
+      <span class="skill-tag">ASP.NET Core</span>
+      <span class="skill-tag">C#</span>
+      <span class="skill-tag">SignalR</span>
+      <span class="skill-tag">PostgreSQL</span>
+      <span class="skill-tag">EF Core</span>
+      <span class="skill-tag">React</span>
+      <span class="skill-tag">TypeScript</span>
+      <span class="skill-tag">Node.js</span>
+      <span class="skill-tag">Express.js</span>
+      <span class="skill-tag">JWT / Auth</span>
+      <span class="skill-tag">REST APIs</span>
+      <span class="skill-tag">Git</span>
+    </div>
+    <hr>
+    <p class="section-label">projects</p>
+    <div class="projects-list">
+      <div class="project-item">
+        <p class="project-name"><a href="https://github.com/" target="_blank" rel="noopener">Inkboard</a></p>
+        <p class="project-stack">ASP.NET Core &middot; SignalR &middot; React &middot; Konva.js &middot; PostgreSQL</p>
+        <p class="project-desc">Real-time collaborative canvas for up to 5 users. MS Paint-style drawing with a Fortnite-inspired party system, JWT auth with refresh tokens, and onion architecture on the backend.</p>
+      </div>
+      <div class="project-item">
+        <p class="project-name"><a href="https://github.com/" target="_blank" rel="noopener">AI Physiotherapist Coach</a></p>
+        <p class="project-stack">React &middot; Node.js &middot; OpenAI API</p>
+        <p class="project-desc">Conversational AI coach that generates personalized physiotherapy exercise plans based on user input and injury context.</p>
+      </div>
+      <div class="project-item">
+        <p class="project-name"><a href="https://github.com/" target="_blank" rel="noopener">Restaurant Finder</a></p>
+        <p class="project-stack">React &middot; Express.js &middot; Google Maps API</p>
+        <p class="project-desc">Finds nearby restaurants filtered by dietary restrictions. Handles multi-restriction combinations that typical search tools handle poorly.</p>
+      </div>
+      <div class="project-item">
+        <p class="project-name"><a href="https://github.com/" target="_blank" rel="noopener">Budget Tracker</a></p>
+        <p class="project-stack">React &middot; Express.js &middot; PostgreSQL</p>
+        <p class="project-desc">Personal finance tracker with category breakdowns, monthly summaries, and recurring expense management.</p>
+      </div>
+    </div>
+    <hr>
+    <p class="section-label">experience</p>
+    <div class="experience-list">
+      <div class="exp-item">
+        <p class="exp-role">Software Developer Co-op</p>
+        <p class="exp-company">Company Name &mdash; Vancouver, BC</p>
+        <p class="exp-date">2025 &ndash; present</p>
+      </div>
+    </div>
+    <hr>
+    <p class="section-label">contact</p>
+    <div class="links-row">
+      <a class="social-link" href="https://github.com/" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
+      <a class="social-link" href="https://linkedin.com/in/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a class="social-link" href="mailto:jerry@example.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        jerry@example.com
+      </a>
+      <a class="social-link" href="#" aria-label="Resume">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        Resume
+      </a>
+    </div>
+    <p class="footer">Jerry &mdash; Vancouver, BC &mdash; 2026</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script>
+  (function () {
+    var canvas = document.getElementById('sakura-canvas');
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+    renderer.setClearColor(0x000000, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    var scene = new THREE.Scene();
+    var VIEW_H = 12;
+    var W = canvas.clientWidth;
+    var H = canvas.clientHeight;
+    var VIEW_W = VIEW_H * (W / H);
+
+    var camera = new THREE.OrthographicCamera(
+      -VIEW_W/2, VIEW_W/2, VIEW_H/2, -VIEW_H/2, 0.1, 100
+    );
+    camera.position.z = 10;
+    renderer.setSize(W, H, false);
+
+    /* ── TEXTURES ─────────────────────────────────── */
+    function makeBlossomTex() {
+      var sz = 128, c = document.createElement('canvas');
+      c.width = c.height = sz;
+      var ctx = c.getContext('2d');
+      ctx.clearRect(0,0,sz,sz);
+      ctx.save(); ctx.translate(sz/2, sz/2);
+      for (var i = 0; i < 5; i++) {
+        ctx.save(); ctx.rotate(i / 5 * Math.PI * 2);
+        var g = ctx.createRadialGradient(0,-sz*.21,0, 0,-sz*.21,sz*.27);
+        g.addColorStop(0,   'rgba(255,215,228,1)');
+        g.addColorStop(0.45,'rgba(245,175,205,0.9)');
+        g.addColorStop(1,   'rgba(230,140,175,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.ellipse(0,-sz*.21, sz*.13, sz*.25, 0,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      }
+      // center
+      var cg = ctx.createRadialGradient(0,0,0, 0,0,sz*.08);
+      cg.addColorStop(0,'rgba(255,245,190,1)');
+      cg.addColorStop(1,'rgba(240,210,120,0)');
+      ctx.fillStyle = cg;
+      ctx.beginPath(); ctx.arc(0,0,sz*.08,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+      return new THREE.CanvasTexture(c);
+    }
+
+    function makeFallTex() {
+      var sz = 64, c = document.createElement('canvas');
+      c.width = c.height = sz;
+      var ctx = c.getContext('2d');
+      ctx.clearRect(0,0,sz,sz);
+      ctx.save(); ctx.translate(sz/2,sz/2);
+      for (var i = 0; i < 5; i++) {
+        ctx.save(); ctx.rotate(i/5*Math.PI*2);
+        var g = ctx.createRadialGradient(0,-sz*.18,0, 0,-sz*.18,sz*.22);
+        g.addColorStop(0,  'rgba(255,200,220,1)');
+        g.addColorStop(0.5,'rgba(240,165,195,0.8)');
+        g.addColorStop(1,  'rgba(220,140,170,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.ellipse(0,-sz*.18, sz*.11,sz*.20, 0,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+      }
+      ctx.restore();
+      return new THREE.CanvasTexture(c);
+    }
+
+    var blossomTex = makeBlossomTex();
+    var fallTex    = makeFallTex();
+
+    /* ── BRANCH TREE (built as pivot-chain nodes) ─── */
+    // Each node stores world pos + rotation object so we can sway entire sub-trees
+    var branchMat = new THREE.MeshBasicMaterial({ color: 0x5A3018, side: THREE.DoubleSide });
+
+    // We build branch segments and store them with sway info
+    var segments   = []; // { mesh, baseRot, amp, freq, phase }
+    var tips       = []; // { x, y }
+    var allEnds    = []; // all branch endpoints for blossom density
+
+    var MAX_DEPTH  = 9;
+
+    function addSegment(x1,y1,x2,y2,depth) {
+      var dx=x2-x1, dy=y2-y1;
+      var len=Math.sqrt(dx*dx+dy*dy);
+      // thickness tapers strongly
+      var t = Math.max(0.012, 0.22 * Math.pow(depth/MAX_DEPTH, 1.4));
+      var geo = new THREE.PlaneGeometry(t, len);
+      var mesh = new THREE.Mesh(geo, branchMat);
+      mesh.position.set((x1+x2)/2,(y1+y2)/2,0);
+      var baseRot = Math.atan2(dy,dx) - Math.PI/2;
+      mesh.rotation.z = baseRot;
+      scene.add(mesh);
+      // deeper = more sway, higher freq
+      var depthFrac = 1 - depth/MAX_DEPTH;
+      segments.push({
+        mesh: mesh,
+        baseRot: baseRot,
+        amp:   0.06 + depthFrac * 0.22,   // was 0.01–0.055, now much bigger
+        freq:  0.8  + depthFrac * 1.2,
+        phase: Math.random() * Math.PI * 2
+      });
+    }
+
+    function grow(x,y,angle,len,depth) {
+      if (depth===0||len<0.055) return;
+      var x2=x+Math.sin(angle)*len;
+      var y2=y+Math.cos(angle)*len;
+      addSegment(x,y,x2,y2,depth);
+
+      if (depth<=2) {
+        tips.push({x:x2,y:y2});
+        allEnds.push({x:x2,y:y2});
+        return;
+      }
+      allEnds.push({x:x2,y:y2});
+
+      var spread  = 0.36+Math.random()*0.22;
+      var shrinkL = 0.60+Math.random()*0.10;
+      var shrinkR = 0.60+Math.random()*0.10;
+      grow(x2,y2, angle-spread, len*shrinkL, depth-1);
+      grow(x2,y2, angle+spread, len*shrinkR, depth-1);
+      if (depth>3 && Math.random()<0.55) {
+        grow(x2,y2, angle+(Math.random()-0.5)*0.3, len*0.55, depth-2);
+      }
+    }
+
+    grow(-0.05, -VIEW_H/2+0.05, 0.02, 3.2, MAX_DEPTH);
+
+    /* ── BLOSSOM CLOUD ───────────────────────────── */
+    // Dense cloud: 30 sprites per tip, plus extras at allEnds
+    var BPT = 30;
+    var extraSources = allEnds.filter(function(_,i){ return i%2===0; });
+    var BPE = 8;
+    var totalB = tips.length*BPT + extraSources.length*BPE;
+
+    var bPos  = new Float32Array(totalB*3);
+    var bData = [];
+    var bi = 0;
+
+    function placeBlossomsAt(cx,cy,count,radius) {
+      for (var k=0;k<count;k++) {
+        var r   = radius*(0.2+Math.random()*0.8);
+        var ang = Math.random()*Math.PI*2;
+        var bx  = cx+Math.cos(ang)*r;
+        var by  = cy+Math.sin(ang)*r*0.75;
+        bPos[bi*3]=bx; bPos[bi*3+1]=by; bPos[bi*3+2]=-0.05+Math.random()*0.15;
+        bData.push({
+          cx:cx,cy:cy,
+          ox:bx-cx,oy:by-cy,
+          amp:  0.08+Math.random()*0.14,   // much larger sway offsets
+          freq: 0.9+Math.random()*1.2,
+          phase:Math.random()*Math.PI*2,
+          idx:bi
+        });
+        bi++;
+      }
+    }
+
+    for (var t=0;t<tips.length;t++)          placeBlossomsAt(tips[t].x, tips[t].y, BPT, 0.45);
+    for (var e=0;e<extraSources.length;e++)  placeBlossomsAt(extraSources[e].x, extraSources[e].y, BPE, 0.28);
+
+    var bGeo = new THREE.BufferGeometry();
+    bGeo.setAttribute('position', new THREE.BufferAttribute(bPos,3));
+
+    var bMat = new THREE.PointsMaterial({
+      map: blossomTex,
+      size: 0.55,
+      transparent: true,
+      opacity: 0.94,
+      depthWrite: false,
+      sizeAttenuation: true,
+      alphaTest: 0.02,
+      color: 0xFFE8F0,
+    });
+    scene.add(new THREE.Points(bGeo, bMat));
+
+    /* ── FALLING PETALS ──────────────────────────── */
+    var FALL = 280;  // way more petals
+    var fPos  = new Float32Array(FALL*3);
+    var fData = [];
+
+    // x-range from tips
+    var xlo=-VIEW_W*0.4, xhi=VIEW_W*0.4;
+    if (tips.length>0) {
+      xlo=tips[0].x; xhi=tips[0].x;
+      for (var i=1;i<tips.length;i++){
+        if(tips[i].x<xlo)xlo=tips[i].x;
+        if(tips[i].x>xhi)xhi=tips[i].x;
+      }
+      xlo-=0.8; xhi+=0.8;
+    }
+
+    for (var i=0;i<FALL;i++) {
+      var src = tips[Math.floor(Math.random()*tips.length)];
+      var fx = src ? src.x+(Math.random()-0.5)*0.8 : xlo+Math.random()*(xhi-xlo);
+      var fy = src ? src.y-(Math.random()*VIEW_H)  : (Math.random()-0.5)*VIEW_H;
+      fPos[i*3]=fx; fPos[i*3+1]=fy; fPos[i*3+2]=0.3+Math.random()*0.5;
+      fData.push({
+        x:fx, y:fy,
+        vx:(Math.random()-0.5)*0.018,
+        vy:-(0.012+Math.random()*0.030),  // faster fall
+        drift: Math.random()*Math.PI*2,
+        driftSpeed: 0.8+Math.random()*1.8,
+        driftAmp:   0.008+Math.random()*0.014,
+        spin: Math.random()*Math.PI*2,
+        spinSpeed:(Math.random()-0.5)*0.08,
+      });
+    }
+
+    var fGeo = new THREE.BufferGeometry();
+    fGeo.setAttribute('position',new THREE.BufferAttribute(fPos,3));
+    var fMat = new THREE.PointsMaterial({
+      map: fallTex,
+      size: 0.28,
+      transparent: true,
+      opacity: 0.82,
+      depthWrite: false,
+      sizeAttenuation: true,
+      alphaTest: 0.01,
+      color: 0xF0B8D0,
+    });
+    scene.add(new THREE.Points(fGeo,fMat));
+
+    /* ── WIND: global oscillating force ──────────── */
+    // A slow sine "wind gust" that biases horizontal drift
+    function windX(t) {
+      return Math.sin(t*0.27)*0.006 + Math.sin(t*0.61)*0.003;
+    }
+
+    /* ── ANIMATE ─────────────────────────────────── */
+    var clock = new THREE.Clock();
+    var bPosArr = bGeo.attributes.position.array;
+    var fPosArr = fGeo.attributes.position.array;
+    var cvw = VIEW_W;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      var t = clock.getElapsedTime();
+      var wx = windX(t);
+
+      // Branch sway
+      for (var s=0;s<segments.length;s++) {
+        var sg=segments[s];
+        sg.mesh.rotation.z = sg.baseRot + Math.sin(t*sg.freq+sg.phase)*sg.amp;
+      }
+
+      // Blossom sway (position-based, large)
+      for (var b=0;b<bData.length;b++) {
+        var bd=bData[b];
+        var sw = Math.sin(t*bd.freq+bd.phase)*bd.amp;
+        var ii = bd.idx;
+        bPosArr[ii*3]   = bd.cx+bd.ox+sw;
+        bPosArr[ii*3+1] = bd.cy+bd.oy+Math.cos(t*bd.freq+bd.phase)*bd.amp*0.5;
+      }
+      bGeo.attributes.position.needsUpdate=true;
+
+      // Falling petals
+      for (var k=0;k<FALL;k++) {
+        var p=fData[k];
+        p.drift += p.driftSpeed*0.016;
+        p.spin  += p.spinSpeed;
+        p.x += p.vx + Math.sin(p.drift)*p.driftAmp + wx;
+        p.y += p.vy;
+
+        // respawn from a tip
+        if (p.y < -VIEW_H/2-0.8) {
+          var rs = tips[Math.floor(Math.random()*tips.length)];
+          p.x = rs ? rs.x+(Math.random()-0.5)*0.9 : xlo+Math.random()*(xhi-xlo);
+          p.y = rs ? rs.y+0.1 : VIEW_H/2+0.5;
+          p.vy = -(0.012+Math.random()*0.030);
+          p.vx = (Math.random()-0.5)*0.018;
+        }
+        if (p.x > cvw/2+1.2) p.x=-cvw/2-1.2;
+        if (p.x <-cvw/2-1.2) p.x= cvw/2+1.2;
+
+        fPosArr[k*3]   = p.x;
+        fPosArr[k*3+1] = p.y;
+      }
+      fGeo.attributes.position.needsUpdate=true;
+
+      renderer.render(scene,camera);
+    }
+
+    animate();
+
+    /* ── RESIZE ──────────────────────────────────── */
+    window.addEventListener('resize',function(){
+      W=canvas.clientWidth; H=canvas.clientHeight;
+      renderer.setSize(W,H,false);
+      cvw=VIEW_H*(W/H);
+      camera.left=-cvw/2; camera.right=cvw/2;
+      camera.top=VIEW_H/2; camera.bottom=-VIEW_H/2;
+      camera.updateProjectionMatrix();
+    });
+  })();
+  </script>
+</body>
+</html>
