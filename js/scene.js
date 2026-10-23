@@ -85,12 +85,12 @@ function drawRopes(context, width, compact) {
   }
 }
 
-export function drawScene(canvas, width, height, compact) {
+export function drawScene(canvas, width, height, compact, showRopes = true) {
   canvas.width = width;
   canvas.height = height;
   const context = contextFor(canvas);
   drawSky(context, width, height);
   drawMountains(context, width, height, compact);
   drawForeground(context, width, height, compact);
-  drawRopes(context, width, compact);
+  if (showRopes) drawRopes(context, width, compact);
 }

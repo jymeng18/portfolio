@@ -36,6 +36,39 @@ export const sprites = {
     '.oooooooo.', 'ohccccccho', 'olhcccchlo', 'oclhcchlco',
     'occlhhlcco', 'occcllccco', 'occlcclcco', 'olcccccclo', '.oooooooo.',
   ],
+  code: [
+    '..........', '...d..d...', '..d....d..', '.d......d.', '..d....d..',
+    '...d..d...', '..........', '..dddddd..', '..........', '..........',
+  ],
+  database: [
+    '..dddddd..', '.dhhhhhd..', 'dhcccccchd',
+    'dhlllllld.', 'dhcccccchd', 'dhllllllld', 'dhcccccchd',
+    'dhllllllld', '.dlllllld.', '..dddddd..',
+  ],
+  people: [
+    '..ddd.dd..', '.dhhddhd..', '.dhhddhd..',
+    '..dd..dd..', '.dDDdNNd..', 'dDDDDNNNd.', 'dDDDDNNNd.', 'dDDDDNNNd.',
+    '.ddddddd..', '..........',
+  ],
+  avatar: [
+    '................................', '................................',
+    '................................', '............ooooooo.............',
+    '..........ooooooooooo...........', '.........ooooooooooooo..........',
+    '........ooooooooooooooo.........', '........ooooooooooooooo.........',
+    '........oooooohhhhooooo.........', '........oooohhhhhhhoooo.........',
+    '.........oohhhhhhhhhooo.........', '.........ohhhhhhhhhhoo..........',
+    '........ohhhhhohhhohhho.........', '........ohhhhhohhhohhho.........',
+    '.........lhhhhhhhhhhl...........', '.........lhhhhhhhhhhl...........',
+    '..........lhhsshhhhl............', '...........lhhhhhl..............',
+    '............lllll...............', '............ohhho...............',
+    '..........ooNhhlNoo.............', '........ooDNNNNNNNDoo...........',
+    '.......oDDDDNNNNNDDDDo..........',
+    '......oDDDDDDNNNDDDDDDo.........', '......oDDDDDDNNNDDDDDDo.........',
+    '......oDDDDDDNNNDDDDDDo.........', '......ohDDDDDNNNDDDDho..........',
+    '......ohhDDDDNNNDDDhho..........',
+    '.......ooDDDDNNNDDDoo...........', '........oDDDDNNNDDDo............',
+    '........oDDDDNNNDDDo............', '........oooooooooooo............',
+  ],
   star: ['..c..', '..i..', 'ciiic', '..i..', '..c..'],
   sparkle: ['.c.', 'cic', '.c.'],
   sprout: [
@@ -270,6 +303,85 @@ export function drawUtility(canvas, kind, muted = false) {
       }
     }
   }
+}
+
+/** Small original illustrations use palette grids, just like the title sprites. */
+function rectangleGrid(width, height, rectangles) {
+  const grid = Array.from({ length: height }, () => Array(width).fill('.'));
+  for (const [color, x, y, boxWidth, boxHeight] of rectangles) {
+    for (let row = y; row < Math.min(height, y + boxHeight); row++) {
+      for (let column = x; column < Math.min(width, x + boxWidth); column++) grid[row][column] = color;
+    }
+  }
+  return grid.map(row => row.join(''));
+}
+
+export function drawAvatar(canvas) {
+  const context = contextFor(canvas);
+  paintSprite(context, rectangleGrid(32, 32, [
+    ['L', 0, 0, 32, 32], ['H', 0, 20, 32, 12],
+    ['F', 0, 24, 32, 8], ['M', 0, 27, 32, 5], ['g', 0, 30, 32, 2],
+  ]));
+  paintSprite(context, 'avatar');
+  paintSprite(context, 'leafSmall', 0, 23);
+  paintSprite(context, 'flower', 25, 25);
+}
+
+export function drawProjectArt(canvas, kind) {
+  const context = contextFor(canvas);
+  context.clearRect(0, 0, 64, 32);
+  const common = [
+    ['o', 9, 3, 46, 27], ['c', 10, 4, 44, 25], ['w', 10, 4, 44, 4],
+    ['h', 12, 5, 2, 1], ['h', 16, 5, 2, 1], ['h', 20, 5, 2, 1],
+  ];
+  const scenes = {
+    canvas: [
+      ...common, ['h', 12, 11, 4, 15], ['s', 13, 13, 2, 2], ['g', 13, 18, 2, 2],
+      ['D', 13, 23, 2, 2], ['g', 22, 20, 4, 4], ['g', 25, 17, 4, 7],
+      ['v', 28, 14, 3, 10], ['D', 32, 19, 4, 5], ['L', 35, 16, 4, 8],
+      ['p', 39, 12, 3, 3], ['s', 45, 22, 1, 6], ['s', 46, 23, 1, 3],
+      ['s', 47, 24, 1, 1], ['c', 49, 26, 5, 3],
+    ],
+    rehab: [
+      ...common, ['L', 12, 10, 28, 17], ['o', 23, 11, 5, 5], ['h', 24, 12, 3, 3],
+      ['D', 23, 17, 5, 8], ['D', 19, 17, 4, 2], ['D', 17, 13, 2, 6],
+      ['D', 28, 18, 5, 2], ['D', 32, 15, 2, 4], ['o', 23, 25, 2, 3],
+      ['o', 27, 25, 2, 3], ['c', 24, 18, 2, 2], ['c', 25, 23, 2, 2],
+      ['g', 43, 12, 8, 2], ['h', 43, 17, 8, 2], ['w', 43, 22, 5, 2],
+    ],
+    diagrams: [
+      ...common, ['M', 31, 13, 2, 8], ['M', 20, 20, 25, 2],
+      ['M', 20, 20, 2, 5], ['M', 43, 20, 2, 5],
+      ['o', 25, 10, 14, 7], ['h', 26, 11, 12, 5], ['c', 28, 12, 7, 1],
+      ['o', 14, 23, 14, 6], ['L', 15, 24, 12, 4],
+      ['o', 37, 23, 14, 6], ['v', 38, 24, 12, 4],
+    ],
+  };
+  paintSprite(context, rectangleGrid(64, 32, scenes[kind] || common));
+}
+
+export function drawMailbox(canvas) {
+  const context = contextFor(canvas);
+  context.clearRect(0, 0, 64, 64);
+  paintSprite(context, rectangleGrid(64, 64, [
+    ['H', 8, 55, 49, 5], ['v', 13, 57, 42, 3], ['G', 8, 59, 49, 2],
+    ['d', 28, 32, 7, 27], ['w', 29, 33, 5, 25], ['h', 29, 33, 1, 25],
+    ['d', 23, 35, 17, 4], ['w', 24, 35, 15, 2],
+    ['o', 17, 17, 31, 18], ['o', 20, 14, 25, 3], ['o', 23, 12, 19, 3],
+    ['D', 18, 18, 29, 15], ['B', 21, 15, 23, 3], ['L', 24, 13, 17, 2],
+    ['L', 19, 18, 2, 13], ['N', 36, 17, 10, 16],
+    ['o', 35, 17, 1, 16], ['c', 41, 25, 3, 1],
+    ['d', 25, 11, 2, 11], ['p', 25, 6, 11, 7], ['h', 27, 7, 8, 1],
+    ['d', 25, 20, 2, 2], ['o', 14, 27, 13, 9],
+    ['c', 15, 28, 11, 6], ['h', 16, 29, 9, 1],
+    ['w', 18, 30, 5, 1], ['w', 20, 31, 2, 1],
+  ]));
+  paintSprite(context, 'flower', 11, 52);
+  paintSprite(context, 'flower', 45, 52);
+  paintSprite(context, 'grass', 19, 55);
+  paintSprite(context, 'grass', 36, 55);
+  paintSprite(context, 'sparkle', 48, 12);
+  paintSprite(context, 'sparkle', 9, 18);
 }
 
 /** Cloud outlines are rasterized into a palette grid before reaching the canvas. */

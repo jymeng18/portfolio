@@ -1,0 +1,44 @@
+{
+  "name": "Jerry Meng",
+  "role": "Software developer",
+  "location": "Vancouver, BC",
+  "email": "jma304@sfu.ca",
+  "github": "https://github.com/jymeng18",
+  "linkedin": "https://www.linkedin.com/in/jerry-meng18/",
+  "resume": "JM_Resume___Master.pdf",
+  "greeting": "Hey, I'm Jerry.",
+  "bio": "I'm a Computing Science student at SFU who likes turning complicated problems into useful, dependable software. My work lives mostly behind the scenes: real-time systems, thoughtful APIs, and the little details that make an application feel effortless.",
+  "focus": ["Backend engineering", "Real-time systems", "Full-stack development"],
+  "education": {
+    "school": "Simon Fraser University",
+    "degree": "Bachelor of Computing Science",
+    "dates": "2024–2028",
+    "note": "Expected graduation · May 2028",
+    "gpa": "3.57",
+    "courses": ["Systems Programming", "Data Structures", "Software Engineering Principles", "Database Systems"]
+  },
+  "experience": [
+    {
+      "role": "Software Developer Co-op",
+      "company": "BC Hydro · Powertech Labs",
+      "dates": "May–Sept 2026",
+      "location": "Surrey, BC",
+      "description": "Built tools for the engineers behind the power grid: ASP.NET Core APIs for power-flow analysis, a Python documentation pipeline used by 50+ engineers, and improvements to a legacy C++ application.",
+      "stack": ["C#", "ASP.NET Core", "SQL Server", "Python", "C++"]
+    },
+    {
+      "role": "Full-stack Developer · Capstone",
+      "company": "Aether Automation × SFU",
+      "dates": "Jan–May 2026",
+      "location": "Surrey, BC",
+      "description": "Co-developed a Spring Boot microservice that turns client project data into architecture diagrams, connecting Zoho's APIs, OAuth 2.0, and AI-generated Lucidchart XML.",
+      "stack": ["Java", "Spring Boot", "Zoho", "OAuth 2.0"]
+    }
+  ],
+  "skills": [
+    { "name": "Languages", "icon": "code", "items": ["C#", "TypeScript", "Python", "Java", "C", "C++", "SQL", "Bash"] },
+    { "name": "Frameworks", "icon": "folder", "items": ["ASP.NET Core", ".NET", "EF Core", "Spring Boot", "React"] },
+    { "name": "Data & real time", "icon": "database", "items": ["PostgreSQL", "SQL Server", "MySQL", "Redis", "SignalR"] },
+    { "name": "Cloud & tools", "icon": "sprout", "items": ["Azure", "Docker", "GitHub Actions", "Azure Pipelines", "Git", "Postman"] }
+  ]
+}

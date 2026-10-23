@@ -1,0 +1,54 @@
+[
+  {
+    "id": "collaborative-canvas",
+    "title": "Collaborative Canvas",
+    "category": "Personal",
+    "label": "Real-time collaboration",
+    "art": "canvas",
+    "description": "A shared drawing space where strokes and cursors travel together, in real time.",
+    "stack": ["C#", "ASP.NET Core", "SignalR", "React", "Redis", "PostgreSQL"],
+    "intro": "A multi-user drawing application built around a React and Konva.js canvas, with a backend designed to keep every participant in sync.",
+    "highlights": [
+      "Synchronized drawing and cursor interactions with SignalR WebSockets.",
+      "Used a Redis backplane to distribute low-latency messages across server instances.",
+      "Built REST APIs with ASP.NET Core and Entity Framework Core.",
+      "Batched drawing-log writes in background services and cached active sessions in Redis.",
+      "Containerized and deployed the application to Azure with automated CI/CD pipelines."
+    ],
+    "links": []
+  },
+  {
+    "id": "rehabilitation-platform",
+    "title": "AI Rehabilitation Platform",
+    "category": "Hackathon",
+    "label": "Mountain Madness 2026 · Track winner",
+    "art": "rehab",
+    "description": "Real-time posture feedback and spoken guidance to make rehabilitation more approachable.",
+    "stack": ["TypeScript", "React", "MediaPipe", "ElevenLabs", "VAPI", "Gemini"],
+    "intro": "Co-developed an AI-powered physical rehabilitation application that won multiple tracks at Mountain Madness 2026.",
+    "highlights": [
+      "Analyzed live webcam coordinates with MediaPipe to provide real-time posture correction.",
+      "Combined VAPI and ElevenLabs for spoken feedback based on the user's exercise form.",
+      "Processed session movement data with Gemini to generate progress summaries.",
+      "Created downloadable PDF progress reports using jsPDF."
+    ],
+    "links": []
+  },
+  {
+    "id": "architecture-diagrams",
+    "title": "Architecture Diagram Generator",
+    "category": "Capstone",
+    "label": "Aether Automation × SFU",
+    "art": "diagrams",
+    "description": "From client data to import-ready diagrams, with less repetitive work in between.",
+    "stack": ["Java", "Spring Boot", "Zoho", "Spring JPA", "OAuth 2.0", "GenAI"],
+    "intro": "A capstone project with Aether Automation: a Spring Boot microservice that automates the architectural diagrams needed for client deliverables.",
+    "highlights": [
+      "Built a secure pipeline for fetching client CRM records through Zoho Creator v2 REST APIs and OAuth 2.0.",
+      "Converted structured project data into import-ready Lucidchart XML with a GenAI-powered engine.",
+      "Co-developed a scalable microservice to replace manual diagram-generation workflows.",
+      "Used server-rendered Thymeleaf pages to improve search-engine visibility."
+    ],
+    "links": []
+  }
+]

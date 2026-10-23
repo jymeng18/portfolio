@@ -2,6 +2,7 @@ import { contextFor, paintSprite, spriteCanvas, cloudCanvas, drawSign, drawMenuB
 import { drawScene } from './scene.js';
 import { createAudio } from './audio.js';
 import { initRouter } from './router.js';
+import { createPortfolioViews } from './views.js';
 
 const world = document.querySelector('#world');
 const sign = document.querySelector('#sign-art');
@@ -9,7 +10,6 @@ const landscape = document.querySelector('#landscape');
 const menuLinks = [...document.querySelectorAll('.menu-button')];
 const soundToggle = document.querySelector('#sound-toggle');
 const soundIcon = document.querySelector('#sound-icon');
-const notice = document.querySelector('#route-notice');
 const help = document.querySelector('#help-dialog');
 let compact = false;
 
@@ -18,7 +18,8 @@ const layoutSheet = new CSSStyleSheet();
 document.adoptedStyleSheets = [...document.adoptedStyleSheets, layoutSheet];
 
 function layout() {
-  const { clientWidth: width, clientHeight: height } = world;
+  const width = document.documentElement.clientWidth;
+  const height = window.innerHeight;
   compact = width / height < 1.2 || width < 620;
   const scale = Math.max(1, Math.floor(Math.min(width / (compact ? 130 : 320), height / (compact ? 255 : 180))));
   // An even internal width keeps the sign and menu on whole logical pixels.
@@ -26,7 +27,7 @@ function layout() {
   const sceneHeight = Math.ceil(height / scale);
   layoutSheet.replaceSync(`:root { --pixel: ${scale}px; --scene-width: ${sceneWidth}; --scene-height: ${sceneHeight}; --cloud-travel: ${sceneWidth + 80}; }`);
   world.dataset.layout = compact ? 'compact' : 'wide';
-  drawScene(landscape, sceneWidth, sceneHeight, compact);
+  drawScene(landscape, sceneWidth, sceneHeight, compact, world.dataset.view === 'home');
   drawSign(sign, compact);
   menuLinks.forEach(link => drawMenuButton(link.querySelector('canvas'), link.dataset.page, compact));
 }
@@ -34,6 +35,17 @@ function layout() {
 document.querySelectorAll('[data-sprite]').forEach(canvas => {
   paintSprite(contextFor(canvas), canvas.dataset.sprite);
 });
+document.querySelectorAll('[data-ui-icon]').forEach(canvas => {
+  paintSprite(contextFor(canvas), canvas.dataset.uiIcon);
+});
+
+const frameSheet = new CSSStyleSheet();
+frameSheet.replaceSync(`:root {
+  --wood-button-image: url("${spriteCanvas('button').toDataURL()}");
+  --wood-frame-image: url("${spriteCanvas('frame').toDataURL()}");
+  --leaf-image: url("${spriteCanvas('leafSmall').toDataURL()}");
+}`);
+document.adoptedStyleSheets = [...document.adoptedStyleSheets, frameSheet];
 
 const cloudLayer = document.querySelector('#clouds');
 [0, 1, 2, 0, 2].forEach((variant, index) => {
@@ -83,29 +95,17 @@ menuLinks.forEach((link, index) => {
   });
 });
 
-let noticeTimer;
-function dismissNotice() {
-  window.clearTimeout(noticeTimer);
-  notice.hidden = true;
-}
-initRouter(message => {
-  window.clearTimeout(noticeTimer);
-  document.querySelector('#route-message').textContent = message;
-  notice.hidden = false;
-  noticeTimer = window.setTimeout(dismissNotice, 6500);
-}, dismissNotice);
-document.querySelector('#notice-close').addEventListener('click', dismissNotice);
-
 document.querySelector('#help-toggle').addEventListener('click', () => {
-  dismissNotice();
   audio.effect('click');
   help.showModal();
 });
 document.querySelector('#help-close').addEventListener('click', () => help.close());
-help.addEventListener('click', event => {
-  if (event.target !== help) return;
-  const bounds = help.getBoundingClientRect();
-  if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) help.close();
+document.querySelectorAll('dialog').forEach(dialog => {
+  dialog.addEventListener('click', event => {
+    if (event.target !== dialog) return;
+    const bounds = dialog.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.close();
+  });
 });
 
 layout();
@@ -115,3 +115,28 @@ new ResizeObserver(() => {
   window.cancelAnimationFrame(pendingLayout);
   pendingLayout = window.requestAnimationFrame(layout);
 }).observe(world);
+window.addEventListener('resize', () => {
+  window.cancelAnimationFrame(pendingLayout);
+  pendingLayout = window.requestAnimationFrame(layout);
+});
+
+let activePage = 'home';
+let portfolioViews;
+const portfolioStatus = document.querySelector('#portfolio-status');
+portfolioStatus.textContent = 'Opening the journal…';
+portfolioStatus.hidden = false;
+createPortfolioViews(kind => audio.effect(kind)).then(views => {
+  portfolioViews = views;
+  portfolioStatus.hidden = true;
+  views.enter(activePage);
+}).catch(error => {
+  portfolioStatus.setAttribute('role', 'alert');
+  portfolioStatus.textContent = 'The journal could not load. Please refresh the page to try again.';
+  console.error(error);
+});
+
+initRouter(page => {
+  activePage = page;
+  layout();
+  portfolioViews?.enter(page);
+});
