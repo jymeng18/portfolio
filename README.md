@@ -21,8 +21,10 @@ directly: browsers require HTTP to load ES modules.
 - A shared 24-color palette in `css/styles.css`.
 - A 320×180 scene at 4× for 1280×720, with a separately composed portrait layout.
 - Drifting clouds and twinkling stars that pause for reduced-motion preferences.
-- Optional original synthesized music and interaction sounds. Sound starts only
-  after a user gesture; the preference persists when local storage is available.
+- Optional original 69-second pastoral score: plucked strings, an airy flute-like
+  melody, warm bass, soft strings, and occasional mallet notes. Music fades in
+  and out, pauses with the page, and resumes at its previous position. Sound
+  starts only after a user gesture; the preference persists when storage is available.
 - Keyboard navigation, visible focus, a help dialog, and accessible HTML labels
   for canvas artwork.
 
@@ -38,7 +40,8 @@ an honest “still growing” message; they are extension points in `js/router.j
 | `js/sprites.js` | Original palette grids, pixel lettering, sprite rendering |
 | `js/scene.js` | Sky, landscape, foreground, hanging ropes |
 | `js/main.js` | Integer layout, controls, sprite setup, interactions |
-| `js/audio.js` | Original synthesized music and sounds |
+| `js/audio.js` | Sound preferences, gesture protection, scheduling, fades |
+| `js/music.js` | Original 24-bar score and synthesized instruments |
 | `js/router.js` | Hash navigation and pending destination feedback |
 | `scripts/verify.mjs` | Optional Playwright checks and screenshot capture |
 | `screenshots/` | Browser-verified desktop and mobile previews |
@@ -62,6 +65,16 @@ To repeat the checks with Playwright already available in your environment,
 start the local server and run `node scripts/verify.mjs`. The optional
 `--playwright-module` and `--chromium-path` arguments accept explicit paths for
 an existing installation. No test packages are installed by this project.
+
+The browser checks also render two complete music loops to verify audible output,
+headroom, and continuity. Add `--audio-preview` to save a 16-second WAV excerpt to
+`screenshots/music-preview.wav`; this review file is not loaded by the website.
+
+The musical direction draws on ConcernedApe's descriptions of harp, banjo,
+strings, mallets, and flute in [Dev Update #16](https://www.stardewvalley.net/dev-update-16/),
+along with the sampled-instrument and stereo-delay discussion in
+[Recreating the Sonic Aesthetics of the Super Nintendo](https://doi.org/10.1525/jsmg.2026.7.1.1).
+The melody, harmony, instrument synthesis, and sound effects in this project are original.
 
 Lighthouse was not installed, so a numerical Lighthouse score has not been measured.
 

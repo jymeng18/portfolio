@@ -1,73 +1,83 @@
-/** Quiet, original pentatonic music and interaction sounds; no downloaded audio. */
+/** Gesture-safe playback, smooth fades, and persistent sound preferences. */
+import { createMusic, BAR_SECONDS, MUSIC_VOLUME } from './music.js';
+
 const STORAGE_KEY = 'jerry-portfolio-muted';
-const melody = [
-  76, 0, 79, 81, 0, 79, 76, 0, 74, 0, 72, 74, 0, 76, 0, 0,
-  72, 0, 76, 79, 0, 76, 74, 0, 69, 0, 72, 74, 0, 72, 0, 0,
-];
-const chords = [[48, 55, 64], [45, 52, 60], [53, 60, 67], [55, 62, 69]];
-const frequency = note => 440 * 2 ** ((note - 69) / 12);
 
 export function createAudio(onChange) {
   let muted = true;
   let context;
   let master;
+  let music;
   let timer;
-  let nextNote = 0;
-  let step = 0;
+  let suspendTimer;
+  let nextBarTime = 0;
+  let bar = 0;
   let activated = false;
+  let transition = 0;
 
   try { muted = localStorage.getItem(STORAGE_KEY) !== 'false'; } catch { /* Storage can be disabled. */ }
 
-  function tone(note, start, duration, volume, type = 'triangle') {
-    const oscillator = context.createOscillator();
-    const envelope = context.createGain();
-    oscillator.type = type;
-    oscillator.frequency.value = frequency(note);
-    envelope.gain.setValueAtTime(0, start);
-    envelope.gain.linearRampToValueAtTime(volume, start + .018);
-    envelope.gain.exponentialRampToValueAtTime(.0001, start + duration);
-    oscillator.connect(envelope).connect(master);
-    oscillator.start(start);
-    oscillator.stop(start + duration + .03);
-    oscillator.onended = () => { oscillator.disconnect(); envelope.disconnect(); };
+  function fadeTo(volume, seconds) {
+    const now = context.currentTime;
+    if (master.gain.cancelAndHoldAtTime) master.gain.cancelAndHoldAtTime(now);
+    else {
+      const current = master.gain.value;
+      master.gain.cancelScheduledValues(now);
+      master.gain.setValueAtTime(current, now);
+    }
+    master.gain.linearRampToValueAtTime(volume, now + seconds);
   }
 
   function schedule() {
-    if (muted || context.state !== 'running') return;
-    while (nextNote < context.currentTime + .35) {
-      const note = melody[step % melody.length];
-      if (note) tone(note, nextNote, 1.2, .14);
-      if (step % 8 === 0) {
-        const chord = chords[Math.floor(step / 8) % chords.length];
-        chord.forEach((pitch, index) => tone(pitch, nextNote + index * .08, 3.2, .07, 'sine'));
-      }
-      step++;
-      nextNote += .45;
+    if (muted || document.hidden || context.state !== 'running') return;
+    // Recover from a stalled timer without playing a burst of overdue bars.
+    if (nextBarTime < context.currentTime - .1) {
+      const skipped = Math.ceil((context.currentTime - nextBarTime) / BAR_SECONDS);
+      bar += skipped;
+      nextBarTime += skipped * BAR_SECONDS;
     }
-    timer = window.setTimeout(schedule, 180);
+    while (nextBarTime < context.currentTime + .25) {
+      music.scheduleBar(bar++, nextBarTime);
+      nextBarTime += BAR_SECONDS;
+    }
+    timer = window.setTimeout(schedule, 100);
   }
 
   async function start() {
     if (muted || !activated || document.hidden) return;
+    const request = ++transition;
+    window.clearTimeout(suspendTimer);
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
     try {
       if (!context) {
         context = new AudioContext();
         master = context.createGain();
-        master.gain.value = .12;
+        master.gain.value = 0;
         master.connect(context.destination);
+        music = createMusic(context, master);
       }
       await context.resume();
+      if (request !== transition || muted || document.hidden) {
+        if (muted || document.hidden) context.suspend().catch(() => {});
+        return;
+      }
+      if (bar === 0) nextBarTime = context.currentTime + .04;
+      fadeTo(MUSIC_VOLUME, .35);
       window.clearTimeout(timer);
-      nextNote = context.currentTime + .08;
       schedule();
     } catch { /* The visual controls remain usable if audio is unavailable. */ }
   }
 
   function stop() {
+    ++transition;
     window.clearTimeout(timer);
-    if (context?.state === 'running') context.suspend().catch(() => {});
+    window.clearTimeout(suspendTimer);
+    if (context?.state !== 'running') return;
+    fadeTo(0, .09);
+    suspendTimer = window.setTimeout(() => {
+      if (muted || document.hidden) context.suspend().catch(() => {});
+    }, 120);
   }
 
   function update() {
@@ -78,7 +88,11 @@ export function createAudio(onChange) {
   // Even a remembered "sound on" preference waits for an actual user gesture.
   document.addEventListener('click', () => { activated = true; start(); }, { once: true, capture: true });
   document.addEventListener('visibilitychange', () => document.hidden ? stop() : start());
-  window.addEventListener('pagehide', stop);
+  window.addEventListener('pagehide', () => {
+    stop();
+    context?.suspend().catch(() => {});
+  });
+  window.addEventListener('pageshow', start);
   onChange(muted);
 
   return {
@@ -91,9 +105,7 @@ export function createAudio(onChange) {
     },
     effect(kind) {
       if (muted || context?.state !== 'running') return;
-      const now = context.currentTime;
-      tone(kind === 'hover' ? 76 : 72, now, .09, .16, 'sine');
-      if (kind === 'click') tone(79, now + .055, .14, .13, 'sine');
+      music.effect(kind, context.currentTime + .005);
     },
   };
 }
