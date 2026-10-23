@@ -467,9 +467,12 @@
   background: var(--sky-light);
 }
 
-.portrait-frame canvas {
+.portrait-frame img {
+  display: block;
   width: 160px;
   height: 160px;
+  object-fit: cover;
+  image-rendering: auto;
 }
 
 .character-card h2 {

@@ -1,4 +1,4 @@
-import { contextFor, paintSprite, drawAvatar, drawMailbox } from './sprites.js';
+import { contextFor, paintSprite, drawMailbox } from './sprites.js';
 
 
 // Local Devicon SVGs; related .NET/Azure tools share their platform's logo.
@@ -227,7 +227,6 @@ export async function createPortfolioViews(playSound) {
   }));
   bindProfile(profile);
   renderExperience(profile);
-  drawAvatar(document.querySelector('#avatar-art'));
   drawMailbox(document.querySelector('#mailbox-art'));
   createProjectJournal(projects, playSound);
   enableEmailCopy(profile);
