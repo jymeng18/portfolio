@@ -1,4 +1,4 @@
-import { contextFor, paintSprite, drawAvatar, drawMailbox, drawProjectArt } from './sprites.js';
+import { contextFor, paintSprite, drawAvatar, drawMailbox } from './sprites.js';
 
 
 // Local Devicon SVGs; related .NET/Azure tools share their platform's logo.
@@ -133,6 +133,12 @@ function createProjectJournal(projects, playSound) {
     document.querySelector('#project-dialog-label').textContent = project.label;
     document.querySelector('#project-dialog-title').textContent = project.title;
     document.querySelector('#project-dialog-intro').textContent = project.intro;
+    const preview = document.querySelector('#project-preview-image');
+    preview.src = project.image;
+    preview.alt = project.imageAlt;
+    const credit = document.querySelector('#project-preview-credit');
+    credit.textContent = project.imageCredit || '';
+    credit.hidden = !project.imageCredit;
     document.querySelector('#project-highlights').replaceChildren(...project.highlights.map(text => element('li', '', text)));
     tags(document.querySelector('#project-stack'), project.stack);
     const links = document.querySelector('#project-links');
@@ -153,13 +159,19 @@ function createProjectJournal(projects, playSound) {
 
   for (const project of projects) {
     const card = template.content.firstElementChild.cloneNode(true);
-    card.dataset.art = project.art;
     card.dataset.project = project.id;
     card.querySelector('h2').textContent = project.title;
-    card.querySelector('.project-category').textContent = project.category === 'Hackathon' ? '★ Hackathon · Track winner' : project.category;
+    card.querySelector('.project-category').textContent = project.collaboration
+      ? `${project.category} · Collaboration`
+      : project.category;
     card.querySelector('.project-description').textContent = project.description;
     tags(card.querySelector('.tech-tags'), project.stack.slice(0, 4));
-    drawProjectArt(card.querySelector('canvas'), project.art);
+    const image = card.querySelector('.project-art img');
+    image.src = project.image;
+    image.alt = project.imageAlt;
+    card.querySelector('.project-summary').replaceChildren(
+      ...project.highlights.slice(0, 2).map(text => element('li', '', text)),
+    );
     const button = card.querySelector('.project-open');
     button.setAttribute('aria-label', `Read journal entry: ${project.title}`);
     button.addEventListener('click', () => openEntry(project));

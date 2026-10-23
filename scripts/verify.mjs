@@ -108,15 +108,36 @@ try {
   await page.setViewportSize(viewports[0]);
   await page.locator('[data-section="projects"]').click();
   await page.locator('[data-filter="Hackathon"]').click();
-  assert.equal(await page.locator('.project-card:visible').count(), 1);
-  await page.locator('.project-open:visible').click();
-  assert.ok((await page.locator('#project-dialog-title').textContent()).includes('Rehabilitation'));
+  assert.equal(await page.locator('.project-card:visible').count(), 2);
+  await page.locator('[data-project="safebite"] .project-open').click();
+  assert.ok((await page.locator('#project-dialog-title').textContent()).includes('SafeBite'));
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('#project-dialog').evaluate(dialog => dialog.open), false);
   assert.equal(new URL(page.url()).hash, '#projects');
-  assert.ok(await page.locator('.project-open:visible').evaluate(button => button === document.activeElement));
+  assert.ok(await page.locator('[data-project="safebite"] .project-open').evaluate(button => button === document.activeElement));
   await page.locator('[data-filter="All"]').click();
-  assert.equal(await page.locator('.project-card:visible').count(), 3);
+  assert.equal(await page.locator('.project-card:visible').count(), 8);
+  for (const card of await page.locator('.project-card').all()) {
+    await card.scrollIntoViewIfNeeded();
+    const preview = card.locator('.project-art img');
+    await preview.evaluate(image => image.decode());
+    assert.ok(await preview.evaluate(image => image.naturalWidth > 0));
+    await card.locator('.project-open').click();
+    await page.locator('#project-preview-image').evaluate(image => image.decode());
+    const repository = await page.locator('#project-links a').first().getAttribute('href');
+    const id = await card.getAttribute('data-project');
+    const collaborationLinks = {
+      'lucidchart-generator': 'https://github.com/mbuiiiz/Lucidchart-Generator',
+      seido: 'https://github.com/ryanraen/Seido',
+    };
+    if (collaborationLinks[id]) {
+      assert.equal(repository, collaborationLinks[id]);
+      assert.ok((await card.locator('.project-category').textContent()).includes('Collaboration'));
+    } else assert.ok(repository.startsWith('https://github.com/jymeng18/'));
+    assert.ok(await page.locator('#project-highlights li').count() >= 3);
+    await page.keyboard.press('Escape');
+  }
+  console.log('PASS: eight loaded previews, full project details, and repository links');
   await page.locator('[data-section="contact"]').click();
   assert.equal(await page.locator('#contact-email').textContent(), 'jma304@sfu.ca');
   await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);

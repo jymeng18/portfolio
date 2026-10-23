@@ -1,54 +1,255 @@
 [
   {
-    "id": "collaborative-canvas",
-    "title": "Collaborative Canvas",
-    "category": "Personal",
-    "label": "Real-time collaboration",
-    "art": "canvas",
-    "description": "A shared drawing space where strokes and cursors travel together, in real time.",
-    "stack": ["C#", "ASP.NET Core", "SignalR", "React", "Redis", "PostgreSQL"],
-    "intro": "A multi-user drawing application built around a React and Konva.js canvas, with a backend designed to keep every participant in sync.",
-    "highlights": [
-      "Synchronized drawing and cursor interactions with SignalR WebSockets.",
-      "Used a Redis backplane to distribute low-latency messages across server instances.",
-      "Built REST APIs with ASP.NET Core and Entity Framework Core.",
-      "Batched drawing-log writes in background services and cached active sessions in Redis.",
-      "Containerized and deployed the application to Azure with automated CI/CD pipelines."
+    "id": "9to5",
+    "title": "9to5",
+    "category": "Games",
+    "label": "A corporate survival game",
+    "image": "assets/projects/9to5.webp",
+    "imageAlt": "9to5 demo showing a Windows XP-style desktop, office tasks, and career progress",
+    "description": "Survive office life from a Windows XP-style desktop and work your way to CEO.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "Zustand",
+      "TanStack Start",
+      "TanStack Router",
+      "Tailwind CSS",
+      "Vitest"
     ],
-    "links": []
+    "intro": "A browser game about navigating toxic corporate life through a nostalgic desktop interface.",
+    "highlights": [
+      "Complete office tasks while avoiding your boss.",
+      "Recover energy by doomscrolling between tasks.",
+      "Progress through management roles on the way to becoming CEO."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/jymeng18/9to5"
+      },
+      {
+        "label": "Watch demo",
+        "url": "https://youtu.be/IIXLs_peAsA"
+      }
+    ]
   },
   {
-    "id": "rehabilitation-platform",
-    "title": "AI Rehabilitation Platform",
+    "id": "inkboard",
+    "title": "Inkboard",
+    "category": "Web apps",
+    "label": "Real-time collaborative drawing",
+    "image": "assets/projects/Inkboard.webp",
+    "imageAlt": "Inkboard landing page inviting users to start a shared drawing session",
+    "description": "A shared canvas that makes live drawing with friends or teammates simple.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "ASP.NET Core",
+      "SignalR",
+      ".NET 10",
+      "PostgreSQL",
+      "Vite"
+    ],
+    "intro": "A browser-based drawing app inspired by MS Paint and social, room-based games, designed for quick live collaboration.",
+    "highlights": [
+      "Draw together on the same canvas with real-time updates.",
+      "Join room-based sessions with friends or teammates.",
+      "Pair a React client with an ASP.NET Core backend, SignalR, and PostgreSQL."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/jymeng18/Inkboard"
+      },
+      {
+        "label": "Watch demo",
+        "url": "https://github.com/user-attachments/assets/c943291f-4309-4a5a-a475-093448e06746"
+      }
+    ]
+  },
+  {
+    "id": "budgetflow",
+    "title": "BudgetFlow",
+    "category": "Web apps",
+    "label": "Lightweight personal finance",
+    "image": "assets/projects/BudgetFlow.webp",
+    "imageAlt": "BudgetFlow dashboard showing transactions, budget categories, and available balances",
+    "description": "Track spending, set category budgets, and understand where your money goes.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "Express.js",
+      "Supabase",
+      "OpenAI"
+    ],
+    "intro": "A personal finance platform built to make everyday budgeting less overwhelming, with clear progress indicators and AI-powered insights.",
+    "highlights": [
+      "Manage income, expenses, and customizable budget categories.",
+      "Track budget targets with progress bars and remaining balances.",
+      "Explore spending reports and personalized AI insights."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/jymeng18/BudgetFlow"
+      }
+    ]
+  },
+  {
+    "id": "safebite",
+    "title": "SafeBite",
     "category": "Hackathon",
-    "label": "Mountain Madness 2026 · Track winner",
-    "art": "rehab",
-    "description": "Real-time posture feedback and spoken guidance to make rehabilitation more approachable.",
-    "stack": ["TypeScript", "React", "MediaPipe", "ElevenLabs", "VAPI", "Gemini"],
-    "intro": "Co-developed an AI-powered physical rehabilitation application that won multiple tracks at Mountain Madness 2026.",
-    "highlights": [
-      "Analyzed live webcam coordinates with MediaPipe to provide real-time posture correction.",
-      "Combined VAPI and ElevenLabs for spoken feedback based on the user's exercise form.",
-      "Processed session movement data with Gemini to generate progress summaries.",
-      "Created downloadable PDF progress reports using jsPDF."
+    "label": "JourneyHacks 2026 · Team project",
+    "image": "assets/projects/SafeBite.webp",
+    "imageAlt": "SafeBite restaurant discovery map with allergen filters and restaurant cards",
+    "description": "An allergy-aware restaurant discovery prototype built at JourneyHacks 2026.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "Express.js",
+      "Leaflet",
+      "Overpass API",
+      "Tailwind CSS",
+      "React Query"
     ],
-    "links": []
+    "intro": "A team-built prototype exploring restaurant discovery around dietary preferences and allergen filters, with live location data from OpenStreetMap.",
+    "highlights": [
+      "Explore nearby restaurants on an interactive Leaflet map.",
+      "Filter results around 14+ common allergens and dietary preferences.",
+      "Fetch restaurant locations through the Overpass API.",
+      "Prototype limitation: allergen assignments are randomized, so ratings are not verified food-safety information."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/jymeng18/SafeBite"
+      }
+    ]
   },
   {
-    "id": "architecture-diagrams",
-    "title": "Architecture Diagram Generator",
-    "category": "Capstone",
-    "label": "Aether Automation × SFU",
-    "art": "diagrams",
-    "description": "From client data to import-ready diagrams, with less repetitive work in between.",
-    "stack": ["Java", "Spring Boot", "Zoho", "Spring JPA", "OAuth 2.0", "GenAI"],
-    "intro": "A capstone project with Aether Automation: a Spring Boot microservice that automates the architectural diagrams needed for client deliverables.",
-    "highlights": [
-      "Built a secure pipeline for fetching client CRM records through Zoho Creator v2 REST APIs and OAuth 2.0.",
-      "Converted structured project data into import-ready Lucidchart XML with a GenAI-powered engine.",
-      "Co-developed a scalable microservice to replace manual diagram-generation workflows.",
-      "Used server-rendered Thymeleaf pages to improve search-engine visibility."
+    "id": "firewatch",
+    "title": "Firewatch",
+    "category": "Web apps",
+    "label": "Wildfire prediction & awareness",
+    "image": "assets/projects/Firewatch.webp",
+    "imageAlt": "Firewatch wildfire-awareness app with an illustrated forest landscape",
+    "imageCredit": "Screenshot background artwork: Firewatch by Campo Santo.",
+    "description": "Explore wildfire risk predictions through interactive maps and environmental education.",
+    "stack": [
+      "React",
+      "Python",
+      "Flask",
+      "scikit-learn",
+      "Leaflet",
+      "Pandas",
+      "NumPy",
+      "Gemini"
     ],
-    "links": []
+    "intro": "A wildfire prediction and awareness project combining machine learning, mapping, and an educational chatbot. Its visual direction is inspired by Campo Santo's Firewatch.",
+    "highlights": [
+      "Search locations and view predicted fire zones on Leaflet maps.",
+      "Display model predictions with severity and confidence scores.",
+      "Train on real wildfire data, with NASA VIIRS credited as a source.",
+      "Use a Gemini-powered chatbot for wildfire and environmental education."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/jymeng18/Firewatch"
+      }
+    ]
+  },
+  {
+    "id": "pyrin",
+    "title": "PyRin",
+    "category": "Games",
+    "label": "2D platformer · Work in progress",
+    "image": "assets/projects/PyRin.webp",
+    "imageAlt": "PyRin platformer preview with a character in a forest level",
+    "imageCredit": "Character sprites: Archon_Aspect's Midnight Forest pack.",
+    "description": "An unfinished 2D platformer exploring movement, collision detection, and game UI.",
+    "stack": [
+      "Python",
+      "Pygame",
+      "pytmx",
+      "Tiled"
+    ],
+    "intro": "A Python and Pygame platformer prototype with keyboard movement and jumping, mouse-driven menus, and levels built with Tiled.",
+    "highlights": [
+      "Implement smooth character movement and collision detection.",
+      "Build levels with Tiled and load map data through pytmx.",
+      "Support keyboard gameplay and clickable UI controls."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/jymeng18/PyRin"
+      }
+    ]
+  },
+  {
+    "id": "lucidchart-generator",
+    "title": "Lucidchart Generator",
+    "category": "Web apps",
+    "collaboration": true,
+    "label": "Aether Automation · Collaboration",
+    "image": "assets/projects/Lucidchart-Generator.webp",
+    "imageAlt": "AetherGen automation dashboard listing Zoho projects with Generate Diagram actions",
+    "description": "Turn structured Zoho Creator project data into import-ready Lucidchart diagrams.",
+    "stack": [
+      "Java",
+      "Spring Boot",
+      "Zoho API",
+      "OpenAI",
+      "OAuth",
+      "Docker"
+    ],
+    "intro": "Co-developed a diagram-generation workflow for Aether Automation that retrieves project data from Zoho Creator and uses AI to produce Lucidchart-compatible XML.",
+    "highlights": [
+      "Fetch project data from Zoho Creator through an OAuth-authenticated workflow.",
+      "Generate downloadable Lucidchart-compatible XML from project relationships and hierarchy.",
+      "Normalize structured project data for AI-powered diagram generation.",
+      "Support independent diagram generation across multiple projects."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/mbuiiiz/Lucidchart-Generator"
+      }
+    ]
+  },
+  {
+    "id": "seido",
+    "title": "Seido",
+    "category": "Hackathon",
+    "collaboration": true,
+    "label": "Mountain Madness 2026 · Track winner · Collaboration",
+    "image": "assets/projects/Seido.webp",
+    "imageAlt": "Seido landing page showing a guided movement session, posture feedback, and progress metrics",
+    "description": "An AI-guided rehabilitation prototype with live posture feedback and session reports.",
+    "stack": [
+      "React",
+      "TypeScript",
+      "MediaPipe",
+      "ElevenLabs",
+      "Vapi",
+      "Gemini",
+      "jsPDF",
+      "Tailwind CSS",
+      "Radix UI"
+    ],
+    "intro": "Co-developed with Mike and Ryan at Mountain Madness 2026, where the project won multiple tracks. Seido explores guided movement sessions with pose detection, spoken feedback, and progress summaries.",
+    "highlights": [
+      "Analyze posture and movement in real time with MediaPipe.",
+      "Provide spoken exercise guidance through ElevenLabs and Vapi.",
+      "Use Gemini to turn session data into progress summaries.",
+      "Export session reports as PDFs with jsPDF."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/ryanraen/Seido"
+      }
+    ]
   }
 ]
