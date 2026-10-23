@@ -42,7 +42,7 @@ function drawMountains(context, width, height, compact) {
   }
 }
 
-function drawForeground(context, width, height, compact) {
+function drawForeground(context, width, height, compact, hasCoop = false) {
   const base = height - 4;
   const distantColors = { G: palette['forest-far'], g: palette.forest, v: palette['forest-far'], d: palette.forest };
   const frontColors = { G: palette['green-dark'], g: palette['green-dark'], v: palette.forest, d: palette['wood-dark'] };
@@ -61,7 +61,7 @@ function drawForeground(context, width, height, compact) {
   }
   if (!compact) {
     // A short, weathered fence frames the scene without filling the center.
-    for (const fenceX of [34, width - 60]) {
+    for (const fenceX of (hasCoop ? [width - 60] : [34, width - 60])) {
       rectangle(context, 'wood-dark', fenceX, base - 8, 25, 3);
       rectangle(context, 'wood', fenceX, base - 8, 25, 1);
       rectangle(context, 'wood-dark', fenceX, base - 4, 25, 2);
@@ -91,6 +91,22 @@ export function drawScene(canvas, width, height, compact, showRopes = true) {
   const context = contextFor(canvas);
   drawSky(context, width, height);
   drawMountains(context, width, height, compact);
-  drawForeground(context, width, height, compact);
-  if (showRopes) drawRopes(context, width, compact);
+  drawForeground(context, width, height, compact, showRopes);
+  if (showRopes) {
+    const smallCoop = compact && height < 278;
+    const coop = smallCoop ? 'coopSmall' : 'coop';
+    const coopX = compact ? 5 : 4;
+    const yardWidth = coopX + sprites[coop][0].length;
+    // A stepped grassy rise joins the building's foundation to the foreground.
+    for (let x = 0; x < yardWidth + 22; x++) {
+      const top = Math.min(height - 4, height - 15 + Math.max(0, Math.floor((x - yardWidth) / 2)));
+      rectangle(context, 'green-dark', x, top, 1, height - top);
+      rectangle(context, 'green', x, top, 1);
+    }
+    for (const x of [yardWidth + 2, yardWidth + 13]) {
+      paintSprite(context, 'grass', x, height - 17 + Math.floor((x - yardWidth) / 2));
+    }
+    paintSprite(context, coop, coopX, height - sprites[coop].length - 12);
+    drawRopes(context, width, compact);
+  }
 }

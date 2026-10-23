@@ -316,6 +316,82 @@ function rectangleGrid(width, height, rectangles) {
   return grid.map(row => row.join(''));
 }
 
+/** Original coop grids: a timber gable, green siding, warm windows, and a hen. */
+function coopGrid(small = false) {
+  const width = small ? 32 : 48;
+  const height = small ? 26 : 42;
+  const grid = Array.from({ length: height }, () => Array(width).fill('.'));
+  const unit = small ? 1 : 2;
+  const left = 3;
+  const right = small ? 23 : 36;
+  const eaves = small ? 10 : 17;
+  const floor = height - 5;
+  const peak = Math.floor((left + right) / 2);
+  function box(color, x, y, w, h = 1) {
+    for (let row = y; row < Math.min(height, y + h); row++) {
+      for (let column = x; column < Math.min(width, x + w); column++) {
+        if (row >= 0 && column >= 0) grid[row][column] = color;
+      }
+    }
+  }
+  // Ground, foundation, and clapboard siding.
+  box('G', 1, floor + 3, width - 2, 2);
+  box('g', 2, floor + 3, width - 4);
+  box('o', left, eaves, right - left, floor - eaves + 2);
+  box('g', left + 1, eaves + 1, right - left - 2, floor - eaves);
+  for (let y = eaves + 2; y < floor; y += unit + 2) {
+    box('v', left + 1, y, right - left - 2);
+    box('G', left + 1, y + 1, right - left - 2);
+  }
+  box('h', left + 1, eaves + 1, unit, floor - eaves);
+  box('d', right - unit - 1, eaves + 1, unit, floor - eaves);
+  box('s', left - 1, floor + 1, right - left + 2, 2);
+  // Stepped roof silhouette, staggered shingles, top-left highlights.
+  for (let y = 2; y <= eaves; y++) {
+    const half = Math.floor((y - 2) * (right - left + 6) / (2 * (eaves - 2)));
+    box('o', peak - half, y, half * 2 + 1);
+    if (half > 1) {
+      box('s', peak - half + 1, y, half * 2 - 1);
+      box('w', peak - half + 1, y, unit);
+      if (y % 3 === 0) box('d', peak - half + unit + 1, y, Math.max(1, half * 2 - unit - 2));
+      else for (let x = peak - half + 3; x < peak + half - 1; x += 5) box('l', x, y, 1);
+    }
+  }
+  box('o', left - 2, eaves + 1, right - left + 5);
+  box('h', left - 1, eaves, right - left + 3);
+  // Framed window and a little chicken hatch, with a ramp below it.
+  const windowY = eaves + 3;
+  box('d', left + 3, windowY, unit * 3 + 2, unit * 3 + 1);
+  box('h', left + 4, windowY + 1, unit * 3, unit * 3 - 1);
+  box('c', left + 4, windowY + 1, unit, unit * 2);
+  box('d', left + 4 + unit, windowY + 1, 1, unit * 3 - 1);
+  const doorX = right - unit * 4 - 3;
+  const doorY = floor - unit * 5;
+  box('h', doorX - 1, doorY - 1, unit * 3 + 4, unit * 5 + 2);
+  box('d', doorX, doorY, unit * 3 + 2, unit * 5 + 1);
+  box('o', doorX + 1, doorY + 1, unit * 3, unit * 5);
+  box('l', doorX - 1, floor + 1, unit * 3 + 4, 2);
+  box('s', doorX, floor + 2, unit * 3 + 2);
+  // A short side fence and one cream-colored hen.
+  box('d', right + 1, floor - 5, width - right - 2, 2);
+  box('h', right + 1, floor - 5, width - right - 2);
+  box('d', width - 3, floor - 7, 2, 9);
+  box('l', width - 3, floor - 6, 1, 7);
+  const henX = right + 1;
+  box('d', henX, floor - 1, 5, 3);
+  box('c', henX, floor - 2, 4, 3);
+  box('i', henX + 2, floor - 4, 3, 3);
+  box('p', henX + 3, floor - 5, 1);
+  box('o', henX + 4, floor - 3, 1);
+  box('w', henX + 5, floor - 2, 1);
+  box('w', henX + 1, floor + 2, 1);
+  box('w', henX + 3, floor + 2, 1);
+  return grid.map(row => row.join(''));
+}
+
+sprites.coop = coopGrid();
+sprites.coopSmall = coopGrid(true);
+
 export function drawAvatar(canvas) {
   const context = contextFor(canvas);
   paintSprite(context, rectangleGrid(32, 32, [
