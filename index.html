@@ -8,11 +8,12 @@
     <title>Jerry Meng · A little world of my own</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/portfolio.css">
     <script type="module" src="js/main.js"></script>
   </head>
   <body>
-    <a class="skip-link" href="#menu">Skip to the menu</a>
-    <div class="world" id="world" data-layout="wide">
+    <a class="skip-link" href="#main-content">Skip to the content</a>
+    <div class="world" id="world" data-layout="wide" data-view="home">
       <canvas class="landscape" id="landscape" width="320" height="180" aria-hidden="true"></canvas>
       <div class="stars" id="stars" aria-hidden="true"></div>
       <div class="clouds" id="clouds" aria-hidden="true"></div>
@@ -25,38 +26,166 @@
         </div>
         <p class="location"><canvas width="9" height="11" data-sprite="sprout" aria-hidden="true"></canvas> VANCOUVER, BC</p>
       </header>
-      <main class="title-screen" id="home">
-        <p class="eyebrow">
-          <canvas width="5" height="5" data-sprite="star" aria-hidden="true"></canvas>
-          <span>WELCOME TO MY LITTLE WORLD</span>
-          <canvas width="5" height="5" data-sprite="star" aria-hidden="true"></canvas>
-        </p>
-        <div class="title-sign">
-          <canvas class="sign-art" id="sign-art" width="176" height="64" aria-hidden="true"></canvas>
-          <h1 class="accessible-copy">Jerry Meng</h1>
-          <p class="accessible-copy">Computing Science @ SFU</p>
-        </div>
-        <p class="introduction">A little curiosity. A lot of building.</p>
-        <nav class="menu" id="menu" aria-label="Explore Jerry's portfolio">
-          <a class="menu-button" href="#projects" data-page="projects">
-            <canvas width="64" height="29" aria-hidden="true"></canvas>
-            <span class="button-label">Projects</span>
-          </a>
-          <a class="menu-button" href="#about" data-page="about">
-            <canvas width="64" height="29" aria-hidden="true"></canvas>
-            <span class="button-label">About</span>
-          </a>
-          <a class="menu-button" href="#contact" data-page="contact">
-            <canvas width="64" height="29" aria-hidden="true"></canvas>
-            <span class="button-label">Contact</span>
-          </a>
-        </nav>
-        <p class="menu-hint"><span class="hint-diamond" aria-hidden="true">◆</span> CHOOSE A PATH. STAY A WHILE. <span class="hint-diamond" aria-hidden="true">◆</span></p>
+      <main id="main-content" tabindex="-1">
+        <section class="title-screen" id="home" aria-label="Title screen">
+          <p class="eyebrow">
+            <canvas width="5" height="5" data-sprite="star" aria-hidden="true"></canvas>
+            <span>WELCOME TO MY LITTLE WORLD</span>
+            <canvas width="5" height="5" data-sprite="star" aria-hidden="true"></canvas>
+          </p>
+          <div class="title-sign">
+            <canvas class="sign-art" id="sign-art" width="176" height="64" aria-hidden="true"></canvas>
+            <h1 class="accessible-copy">Jerry Meng</h1>
+            <p class="accessible-copy">Computing Science @ SFU</p>
+          </div>
+          <p class="introduction">A little curiosity. A lot of building.</p>
+          <nav class="menu" id="menu" aria-label="Explore Jerry's portfolio">
+            <a class="menu-button" href="#projects" data-page="projects">
+              <canvas width="64" height="29" aria-hidden="true"></canvas>
+              <span class="button-label">Projects</span>
+            </a>
+            <a class="menu-button" href="#about" data-page="about">
+              <canvas width="64" height="29" aria-hidden="true"></canvas>
+              <span class="button-label">About</span>
+            </a>
+            <a class="menu-button" href="#contact" data-page="contact">
+              <canvas width="64" height="29" aria-hidden="true"></canvas>
+              <span class="button-label">Contact</span>
+            </a>
+          </nav>
+          <p class="menu-hint"><span class="hint-diamond" aria-hidden="true">◆</span> CHOOSE A PATH. STAY A WHILE. <span class="hint-diamond" aria-hidden="true">◆</span></p>
+        </section>
+
+        <section class="portfolio-shell" id="portfolio" aria-label="Jerry's portfolio" hidden>
+          <div class="portfolio-navigation">
+            <a class="home-link" href="#home"><span aria-hidden="true">←</span> Back to the title</a>
+            <nav class="section-links" aria-label="Portfolio sections">
+              <a class="section-link" href="#projects" data-section="projects"><canvas width="10" height="10" data-ui-icon="folder" aria-hidden="true"></canvas>Projects</a>
+              <a class="section-link" href="#about" data-section="about"><canvas width="10" height="10" data-ui-icon="scroll" aria-hidden="true"></canvas>About</a>
+              <a class="section-link" href="#contact" data-section="contact"><canvas width="10" height="10" data-ui-icon="envelope" aria-hidden="true"></canvas>Contact</a>
+            </nav>
+          </div>
+          <p class="view-status" id="portfolio-status" role="status" hidden></p>
+
+          <section class="wood-window portfolio-view" id="projects" aria-labelledby="projects-title" hidden>
+            <header class="view-heading">
+              <div>
+                <p class="view-kicker">A few things I've been growing</p>
+                <h1 class="view-title" id="projects-title" tabindex="-1">The project journal.</h1>
+                <p class="view-description">From shared canvases to smarter workflows. A collection of things I've built, learned, and brought to life.</p>
+              </div>
+              <div class="heading-art"><canvas width="10" height="10" data-ui-icon="folder" aria-hidden="true"></canvas></div>
+            </header>
+            <div class="journal-tools">
+              <div class="project-filters" role="group" aria-label="Filter projects">
+                <button class="filter-button" type="button" data-filter="All" aria-pressed="true">All entries</button>
+                <button class="filter-button" type="button" data-filter="Personal" aria-pressed="false">Personal</button>
+                <button class="filter-button" type="button" data-filter="Hackathon" aria-pressed="false">Hackathon</button>
+                <button class="filter-button" type="button" data-filter="Capstone" aria-pressed="false">Capstone</button>
+              </div>
+              <span class="entry-count" id="entry-count" role="status"></span>
+            </div>
+            <div class="project-grid" id="project-grid"></div>
+            <div class="journal-bottom">
+              <p>Every project starts with a little curiosity.</p>
+              <a class="text-link" data-profile-link="github" target="_blank" rel="noopener noreferrer">Explore my GitHub <span aria-hidden="true">↗</span></a>
+            </div>
+          </section>
+
+          <section class="wood-window portfolio-view" id="about" aria-labelledby="about-title" hidden>
+            <header class="view-heading">
+              <div>
+                <p class="view-kicker">Meet the person behind the pixels</p>
+                <h1 class="view-title" id="about-title" tabindex="-1">A little about me.</h1>
+                <p class="view-description">Computing Science at SFU. Based in Vancouver. Always finding something new to build.</p>
+              </div>
+              <div class="heading-art"><canvas width="10" height="10" data-ui-icon="scroll" aria-hidden="true"></canvas></div>
+            </header>
+            <div class="about-intro">
+              <div class="character-card">
+                <div class="portrait-frame"><canvas id="avatar-art" width="32" height="32" role="img" aria-label="An original pixel-art character portrait for Jerry"></canvas></div>
+                <h2 data-profile="name">Jerry Meng</h2>
+                <p>Software developer<br>Computing Science @ SFU</p>
+              </div>
+              <div class="dialogue-card">
+                <p class="small-label">Jerry says</p>
+                <h2 id="about-greeting">Hey, I'm Jerry.</h2>
+                <p class="dialogue-copy"><span class="accessible-copy" id="bio-accessible"></span><span id="bio-typed" aria-hidden="true"></span></p>
+                <div class="dialogue-actions">
+                  <span class="dialogue-location">VANCOUVER, BC</span>
+                  <button class="skip-typing" id="skip-typing" type="button">Show all text ↓</button>
+                </div>
+              </div>
+            </div>
+            <div class="about-columns">
+              <section aria-labelledby="experience-title">
+                <h2 class="section-heading" id="experience-title"><canvas width="10" height="10" data-ui-icon="folder" aria-hidden="true"></canvas>The journey so far</h2>
+                <div id="experience-list"></div>
+              </section>
+              <section aria-labelledby="skills-title">
+                <h2 class="section-heading" id="skills-title"><canvas width="10" height="10" data-ui-icon="code" aria-hidden="true"></canvas>My toolbelt</h2>
+                <div id="skill-groups"></div>
+              </section>
+            </div>
+            <section class="education-panel" aria-labelledby="education-title">
+              <div>
+                <p class="small-label">Still learning, always growing</p>
+                <h3 id="education-title">Simon Fraser University</h3>
+                <p id="education-detail"></p>
+                <p id="education-note"></p>
+              </div>
+              <span class="education-year">CLASS OF '28</span>
+            </section>
+            <div class="journal-bottom">
+              <p>There's more to the story.</p>
+              <a class="paper-button" data-profile-link="resume" download="Jerry-Meng-Resume.pdf">Download my resume <span aria-hidden="true">↓</span></a>
+            </div>
+          </section>
+
+          <section class="wood-window portfolio-view" id="contact" aria-labelledby="contact-title" hidden>
+            <header class="view-heading">
+              <div>
+                <p class="view-kicker">Good things begin with a hello</p>
+                <h1 class="view-title" id="contact-title" tabindex="-1">You've found my mailbox.</h1>
+                <p class="view-description">For new ideas, interesting opportunities, and the occasional friendly hello.</p>
+              </div>
+              <div class="heading-art"><canvas width="10" height="10" data-ui-icon="envelope" aria-hidden="true"></canvas></div>
+            </header>
+            <div class="contact-layout">
+              <div class="mailbox-scene">
+                <canvas id="mailbox-art" width="64" height="64" role="img" aria-label="An original pixel mailbox surrounded by flowers"></canvas>
+                <p>LETTERS WELCOME<br>Vancouver, British Columbia</p>
+              </div>
+              <div class="letter-paper">
+                <p class="letter-to">TO: YOUR NEXT GOOD IDEA</p>
+                <h2>Let's build something good.</h2>
+                <p>Have a project in mind, a question, or an opportunity? Drop me a note. I'd love to hear what you're working on.</p>
+                <a class="email-address" id="contact-email" data-profile-link="email"></a>
+                <div class="letter-actions">
+                  <a class="paper-button" data-profile-link="email">Send a letter <span aria-hidden="true">↗</span></a>
+                  <button class="paper-button" id="copy-email" type="button">Copy email</button>
+                </div>
+                <p class="copy-status" id="copy-status" role="status"></p>
+              </div>
+            </div>
+            <div class="social-links">
+              <a class="social-link" data-profile-link="github" target="_blank" rel="noopener noreferrer">
+                <canvas width="10" height="10" data-ui-icon="code" aria-hidden="true"></canvas>
+                <span><strong>GitHub</strong><small>Code, experiments & work in progress</small></span><span class="social-arrow" aria-hidden="true">↗</span>
+              </a>
+              <a class="social-link" data-profile-link="linkedin" target="_blank" rel="noopener noreferrer">
+                <canvas width="10" height="10" data-ui-icon="people" aria-hidden="true"></canvas>
+                <span><strong>LinkedIn</strong><small>Experience & a way to connect</small></span><span class="social-arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <div class="journal-bottom">
+              <p>Prefer the full story? Take a copy with you.</p>
+              <a class="paper-button" data-profile-link="resume" download="Jerry-Meng-Resume.pdf">Download my resume <span aria-hidden="true">↓</span></a>
+            </div>
+          </section>
+          <p class="portfolio-footnote">A little curiosity. A lot of building. <span aria-hidden="true">·</span> Press Esc to return to the title.</p>
+        </section>
       </main>
-      <div class="route-notice" id="route-notice" role="status" hidden>
-        <p id="route-message"></p>
-        <button type="button" class="notice-close" id="notice-close" aria-label="Dismiss message">×</button>
-      </div>
       <footer class="footer">
         <span>© 2026 JERRY MENG</span>
         <span class="footer-note">HANDCRAFTED WITH CURIOSITY</span>
@@ -70,14 +199,38 @@
         <h2 id="help-title">Make yourself at home.</h2>
         <button class="dialog-close" id="help-close" type="button" aria-label="Close navigation help" autofocus>×</button>
       </div>
-      <p>Pick a wooden sign to explore. These paths are still growing while I build the rest of my portfolio.</p>
+      <p>Pick a wooden sign to explore my projects, get to know me, or leave a note. The tabs let you wander between sections.</p>
       <dl class="keyboard-guide">
         <div><dt><kbd>Tab</kbd></dt><dd>Move between controls</dd></div>
         <div><dt><kbd>Enter</kbd></dt><dd>Choose a path</dd></div>
-        <div><dt><kbd>Esc</kbd></dt><dd>Close this little guide</dd></div>
+        <div><dt><kbd>Esc</kbd></dt><dd>Close a window, or return to the title</dd></div>
       </dl>
       <p class="help-footnote">On a phone? Just tap. Music is yours to turn on.</p>
     </dialog>
+    <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-dialog-title">
+      <div class="dialog-heading">
+        <p class="small-label" id="project-dialog-label"></p>
+        <button class="dialog-close" id="project-close" type="button" aria-label="Close project entry" autofocus>×</button>
+      </div>
+      <h2 id="project-dialog-title"></h2>
+      <p id="project-dialog-intro"></p>
+      <ul class="project-highlights" id="project-highlights"></ul>
+      <h3 class="small-label">Inside the toolbelt</h3>
+      <ul class="tech-tags" id="project-stack"></ul>
+      <div class="project-links" id="project-links"></div>
+    </dialog>
+    <template id="project-card-template">
+      <article class="project-card">
+        <div class="project-art"><canvas width="64" height="32" aria-hidden="true"></canvas></div>
+        <div class="project-copy">
+          <p class="project-category"></p>
+          <h2></h2>
+          <p class="project-description"></p>
+          <ul class="tech-tags"></ul>
+          <button class="paper-button project-open" type="button" aria-haspopup="dialog">Read journal entry <span aria-hidden="true">→</span></button>
+        </div>
+      </article>
+    </template>
     <noscript><p class="noscript-message">Welcome! This little pixel world needs JavaScript to draw its scenery. Please enable it to see the title screen.</p></noscript>
   </body>
 </html>
