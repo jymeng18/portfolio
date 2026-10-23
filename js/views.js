@@ -1,5 +1,18 @@
 import { contextFor, paintSprite, drawAvatar, drawMailbox, drawProjectArt } from './sprites.js';
 
+
+// Local Devicon SVGs; related .NET/Azure tools share their platform's logo.
+const techLogos = {
+  'C#': 'csharp', TypeScript: 'typescript', Python: 'python', Java: 'java',
+  C: 'c', 'C++': 'cplusplus', SQL: 'azuresqldatabase', Bash: 'bash',
+  'ASP.NET Core': 'dotnetcore', '.NET': 'dotnetcore', 'EF Core': 'entityframeworkcore',
+  'Spring Boot': 'spring', React: 'react', PostgreSQL: 'postgresql',
+  'SQL Server': 'microsoftsqlserver', MySQL: 'mysql', Redis: 'redis',
+  SignalR: 'dotnetcore', Azure: 'azure', Docker: 'docker',
+  'GitHub Actions': 'githubactions', 'Azure Pipelines': 'azuredevops',
+  Git: 'git', Postman: 'postman',
+};
+
 function element(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -54,7 +67,21 @@ function renderExperience(profile) {
     const heading = element('h3');
     heading.append(icon(skill.icon), document.createTextNode(skill.name));
     const inventory = element('ul', 'tech-tags');
-    tags(inventory, skill.items);
+    for (const name of skill.items) {
+      const badge = element('li', 'tech-badge');
+      const logo = techLogos[name];
+      if (logo) {
+        const image = document.createElement('img');
+        image.src = `assets/tech/${logo}.svg`;
+        image.alt = '';
+        image.width = 20;
+        image.height = 20;
+        image.decoding = 'async';
+        badge.append(image);
+      }
+      badge.append(element('span', 'tech-badge-label', name));
+      inventory.append(badge);
+    }
     group.append(heading, inventory);
     groups.append(group);
   }

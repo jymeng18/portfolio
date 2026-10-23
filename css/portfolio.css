@@ -600,11 +600,29 @@
   height: 20px;
 }
 
-.skill-group .tech-tags li {
-  padding: 6px 8px;
-  border-width: 2px;
+.skill-group .tech-tags {
+  gap: 8px;
+}
+
+.skill-group .tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid var(--wood-edge);
+  border-radius: 6px;
   background: var(--white);
-  font-size: 11px;
+  font: 500 12px/1.4 system-ui, sans-serif;
+}
+
+.tech-badge img {
+  display: block;
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  image-rendering: auto;
 }
 
 .education-panel {
